@@ -1,0 +1,54 @@
+{
+  "name": "syncano-client-js",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "dev": "mocha --watch -R min --compilers js:babel-register tests",
+    "test": "xo && mocha --compilers js:babel-register tests",
+    "test:coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov && codecov"
+  },
+  "xo": {
+    "semicolon": false,
+    "space": true,
+    "esnext": true,
+    "globals": [
+      "it",
+      "describe",
+      "beforeEach"
+    ],
+    "rules": {
+      "object-curly-spacing": 0,
+      "no-warning-comments": [
+        0,
+        {
+          "terms": [
+            "todo"
+          ]
+        }
+      ]
+    }
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ],
+    "plugins": [
+      "transform-object-rest-spread",
+      "transform-class-properties"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.19.0",
+    "babel-plugin-transform-object-rest-spread": "^6.20.2",
+    "babel-preset-latest": "^6.16.0",
+    "babel-register": "^6.18.0",
+    "codecov": "^1.0.1",
+    "mocha": "^3.2.0",
+    "nyc": "^10.0.0",
+    "xo": "^0.17.1"
+  }
+}
