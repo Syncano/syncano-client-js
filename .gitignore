@@ -6,8 +6,12 @@ npm-debug.log*
 # Dependency directories
 node_modules
 
+# Other
+example
+
 # Build
 lib
+dist
 
 # Yarn Integrity file
 .yarn-integrity

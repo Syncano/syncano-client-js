@@ -5,15 +5,27 @@
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src -d lib",
-    "dev": "mocha --watch -R min --compilers js:babel-register tests",
+    "build": "npm run build:dist && npm run build:lib",
+    "build:dist": "webpack",
+    "build:lib": "babel src --out-dir lib",
+    "prebuild": "rm -rf dist || rm -rf lib || true",
+    "prepublish": "npm run build",
     "test": "xo && mocha --compilers js:babel-register tests",
-    "test:coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov && codecov"
+    "test:coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "watch:dist": "webpack --watch",
+    "watch:lib": "babel src --watch -d lib",
+    "watch:test": "mocha --watch --compilers js:babel-register tests",
+    "watch:test:min": "mocha --watch -R min --compilers js:babel-register tests"
   },
   "xo": {
+    "parser": "babel-eslint",
     "semicolon": false,
     "space": true,
     "esnext": true,
+    "module": false,
+    "envs": [
+      "browser"
+    ],
     "globals": [
       "it",
       "describe",
@@ -33,7 +45,9 @@
   },
   "babel": {
     "presets": [
-      "latest"
+      [
+        "env"
+      ]
     ],
     "plugins": [
       "transform-object-rest-spread",
@@ -42,13 +56,24 @@
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.2.10",
     "babel-plugin-transform-class-properties": "^6.19.0",
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
+    "babel-preset-env": "^1.1.4",
     "babel-preset-latest": "^6.16.0",
     "babel-register": "^6.18.0",
+    "chai": "^3.5.0",
     "codecov": "^1.0.1",
+    "exports-loader": "^0.6.3",
+    "imports-loader": "^0.7.0",
     "mocha": "^3.2.0",
     "nyc": "^10.0.0",
+    "webpack": "beta",
     "xo": "^0.17.1"
+  },
+  "dependencies": {
+    "es6-promise": "^4.0.5",
+    "whatwg-fetch": "^2.0.1"
   }
 }
