@@ -93,4 +93,26 @@ describe('client', () => {
       return assert.becomes(client.post('users'), expected)
     })
   })
+
+  describe('#delete', () => {
+    it('exists in client instance', () => {
+      assert.property(client, 'delete')
+    })
+
+    it('throws error if endpoint was not passed', () => {
+      assert.throws(() => client.delete(), /endpoint parameter is required/)
+    })
+
+    it('returns promise', () => {
+      assert.instanceOf(client.delete('users'), Promise)
+    })
+
+    it('resolves with valid output', () => {
+      const expected = { hello: 'world' }
+
+      fetchMock.delete(url('users'), expected)
+
+      return assert.becomes(client.delete('users'), expected)
+    })
+  })
 })
