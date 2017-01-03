@@ -35,7 +35,7 @@ SyncanoClient.prototype.get = function (endpoint = required('endpoint'), body = 
     .then(parseJSON)
 }
 
-SyncanoClient.prototype.post = function (endpoint, body = {}, options = {}) {
+SyncanoClient.prototype.post = function (endpoint = required('endpoint'), body = {}, options = {}) {
   return fetch(this.url(endpoint), {
     method: 'POST',
     headers: this.headers(options.headers),

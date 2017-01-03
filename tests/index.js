@@ -71,4 +71,26 @@ describe('client', () => {
       return assert.becomes(client.get('users'), expected)
     })
   })
+
+  describe('#post', () => {
+    it('exists in client instance', () => {
+      assert.property(client, 'post')
+    })
+
+    it('throws error if endpoint was not passed', () => {
+      assert.throws(() => client.post(), /endpoint parameter is required/)
+    })
+
+    it('returns promise', () => {
+      assert.instanceOf(client.post('users'), Promise)
+    })
+
+    it('resolves with valid output', () => {
+      const expected = { hello: 'world' }
+
+      fetchMock.post(url('users'), expected)
+
+      return assert.becomes(client.post('users'), expected)
+    })
+  })
 })
