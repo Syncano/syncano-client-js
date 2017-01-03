@@ -5,7 +5,7 @@ module.exports = [
   {
     name: 'package',
     entry: [
-      'whatwg-fetch',
+      'isomorphic-fetch',
       'es6-promise',
       './src/index.js'
     ],

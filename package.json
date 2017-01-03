@@ -29,7 +29,8 @@
     "globals": [
       "it",
       "describe",
-      "beforeEach"
+      "beforeEach",
+      "afterEach"
     ],
     "rules": {
       "object-curly-spacing": 0,
@@ -64,8 +65,10 @@
     "babel-preset-latest": "^6.16.0",
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "codecov": "^1.0.1",
     "exports-loader": "^0.6.3",
+    "fetch-mock": "^5.8.0",
     "imports-loader": "^0.7.0",
     "mocha": "^3.2.0",
     "nyc": "^10.0.0",

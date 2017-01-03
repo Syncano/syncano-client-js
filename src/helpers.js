@@ -1,5 +1,5 @@
 export function required(param) {
-  throw new Error(`${param} is required by SyncanoClient`)
+  throw new Error(`${param} parameter is required by SyncanoClient`)
 }
 
 export function checkStatus(response) {
