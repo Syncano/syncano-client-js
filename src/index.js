@@ -57,7 +57,7 @@ SyncanoClient.prototype.delete = function (endpoint = required('endpoint'), body
     .then(parseJSON)
 }
 
-SyncanoClient.prototype.put = function (endpoint, body = {}, options = {}) {
+SyncanoClient.prototype.put = function (endpoint = required('endpoint'), body = {}, options = {}) {
   return fetch(this.url(endpoint), {
     method: 'PUT',
     headers: this.headers(options.headers),

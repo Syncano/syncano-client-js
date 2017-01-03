@@ -115,4 +115,26 @@ describe('client', () => {
       return assert.becomes(client.delete('users'), expected)
     })
   })
+
+  describe('#put', () => {
+    it('exists in client instance', () => {
+      assert.property(client, 'put')
+    })
+
+    it('throws error if endpoint was not passed', () => {
+      assert.throws(() => client.put(), /endpoint parameter is required/)
+    })
+
+    it('returns promise', () => {
+      assert.instanceOf(client.put('users'), Promise)
+    })
+
+    it('resolves with valid output', () => {
+      const expected = { hello: 'world' }
+
+      fetchMock.put(url('users'), expected)
+
+      return assert.becomes(client.put('users'), expected)
+    })
+  })
 })
