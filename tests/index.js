@@ -137,4 +137,26 @@ describe('client', () => {
       return assert.becomes(client.put('users'), expected)
     })
   })
+
+  describe('#patch', () => {
+    it('exists in client instance', () => {
+      assert.property(client, 'patch')
+    })
+
+    it('throws error if endpoint was not passed', () => {
+      assert.throws(() => client.patch(), /endpoint parameter is required/)
+    })
+
+    it('returns promise', () => {
+      assert.instanceOf(client.patch('users'), Promise)
+    })
+
+    it('resolves with valid outpatch', () => {
+      const expected = { hello: 'world' }
+
+      fetchMock.patch(url('users'), expected)
+
+      return assert.becomes(client.patch('users'), expected)
+    })
+  })
 })

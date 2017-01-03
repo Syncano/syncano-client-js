@@ -68,7 +68,7 @@ SyncanoClient.prototype.put = function (endpoint = required('endpoint'), body = 
     .then(parseJSON)
 }
 
-SyncanoClient.prototype.patch = function (endpoint, body = {}, options = {}) {
+SyncanoClient.prototype.patch = function (endpoint = required('endpoint'), body = {}, options = {}) {
   return fetch(this.url(endpoint), {
     method: 'PATCH',
     headers: this.headers(options.headers),
