@@ -25,6 +25,10 @@ SyncanoClient.prototype.setToken = function (token) {
   this.token = token
 }
 
+SyncanoClient.prototype.removeToken = function () {
+  this.token = undefined
+}
+
 SyncanoClient.prototype.get = function (endpoint = required('endpoint'), body = {}, options = {}) {
   return fetch(this.url(endpoint, body), {
     method: 'GET',

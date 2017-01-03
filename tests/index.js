@@ -50,6 +50,18 @@ describe('client', () => {
     })
   })
 
+  describe('#removeToken', () => {
+    it('exists in client instance', () => {
+      assert.property(client, 'removeToken')
+    })
+
+    it('removes client token', () => {
+      client.removeToken()
+
+      assert.equal(client.token, undefined)
+    })
+  })
+
   describe('#get', () => {
     it('exists in client instance', () => {
       assert.property(client, 'get')
