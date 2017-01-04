@@ -1,7 +1,7 @@
 {
-  "name": "syncano-client-js",
+  "name": "syncano-client",
   "version": "0.1.0",
-  "description": "",
+  "description": "Interact with your Syncano Sockets.",
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
