@@ -2,15 +2,38 @@ import querystring from 'querystring'
 import 'isomorphic-fetch' // eslint-disable-line import/no-unassigned-import
 import { required, checkStatus, parseJSON } from './helpers'
 
-function SyncanoClient(instanceName = required('instanceName'), token) {
-  this.baseUrl = 'https://api.syncano.rocks/v2/instances/'
+function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   this.instanceName = instanceName
-  this.token = token
+  this.baseUrl = options.baseUrl || 'https://api.syncano.rocks/v2/instances/'
+  this.loginMethod = options.loginMethod || loginMethod
+  this.token = options.token
 
   this.headers = headers => Object.assign({
     'Content-Type': 'application/json',
     'X-API-KEY': this.token
   }, headers)
+}
+
+function loginMethod(username, password) {
+  const authUrl = `${this.baseUrl}${this.instanceName}/user/auth/`
+  const body = JSON.stringify({ username, password })
+  const options = {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body
+  }
+
+  return fetch(authUrl, options)
+    .then(user => {
+      this.setToken(user.token)
+
+      return user
+    })
+}
+
+SyncanoClient.prototype.login = function (username, password) {
+  return this.loginMethod(username, password)
 }
 
 SyncanoClient.prototype.url = function (endpoint, query) {
@@ -21,12 +44,12 @@ SyncanoClient.prototype.url = function (endpoint, query) {
   return query ? `${url}${query}` : url
 }
 
-SyncanoClient.prototype.setToken = function (token) {
-  this.token = token
+SyncanoClient.prototype.logout = function () {
+  this.token = undefined
 }
 
-SyncanoClient.prototype.removeToken = function () {
-  this.token = undefined
+SyncanoClient.prototype.setToken = function (token) {
+  this.token = token
 }
 
 SyncanoClient.prototype.get = function (endpoint = required('endpoint'), body = {}, options = {}) {

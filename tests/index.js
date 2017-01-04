@@ -14,7 +14,9 @@ describe('client', () => {
   let url
 
   beforeEach(() => {
-    client = new SyncanoClient(instanceName, instanceApiKey)
+    client = new SyncanoClient(instanceName, {
+      token: instanceApiKey
+    })
     url = client.url.bind(client)
   })
 
@@ -50,13 +52,13 @@ describe('client', () => {
     })
   })
 
-  describe('#removeToken', () => {
+  describe('#logout', () => {
     it('exists in client instance', () => {
-      assert.property(client, 'removeToken')
+      assert.property(client, 'logout')
     })
 
     it('removes client token', () => {
-      client.removeToken()
+      client.logout()
 
       assert.equal(client.token, undefined)
     })
