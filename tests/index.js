@@ -7,7 +7,7 @@ chai.use(chaiAsPromised)
 
 const { assert } = chai
 
-describe('client', () => {
+describe('SyncanoClient', () => {
   const instanceName = 'test-instance'
   const instanceApiKey = 'test-api-key'
   let client
@@ -17,25 +17,42 @@ describe('client', () => {
     client = new SyncanoClient(instanceName, {
       token: instanceApiKey
     })
+
     url = client.url.bind(client)
   })
 
   afterEach(() => fetchMock.restore())
 
-  it('init without error', () => {
-    assert.instanceOf(client, SyncanoClient)
+  describe('has property:', () => {
+    it('instanceName', () => {
+      assert.property(client, 'instanceName')
+    })
+
+    it('baseUrl', () => {
+      assert.property(client, 'baseUrl')
+    })
+
+    it('token', () => {
+      assert.property(client, 'token')
+    })
   })
 
-  it('has instanceName property', () => {
-    assert.property(client, 'instanceName')
-  })
+  describe('client', () => {
+    it('throws error if endpoint was not passed', () => {
+      assert.throws(() => client(), /endpoint parameter is required/)
+    })
 
-  it('has baseUrl property', () => {
-    assert.property(client, 'baseUrl')
-  })
+    it('returns promise', () => {
+      assert.instanceOf(client.get('users'), Promise)
+    })
 
-  it('has token property', () => {
-    assert.property(client, 'token')
+    it('resolves with valid output', () => {
+      const expected = { hello: 'world' }
+
+      fetchMock.get(url('users'), expected)
+
+      return assert.becomes(client.get('users'), expected)
+    })
   })
 
   describe('#setToken', () => {

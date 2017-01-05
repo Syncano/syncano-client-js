@@ -1,4 +1,4 @@
-<!-- [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)   [![CircleCI](https://circleci.com/gh/Syncano/syncano-client-js/tree/master.svg?style=shield)](https://circleci.com/gh/Syncano/syncano-client-js/tree/master) -->
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)   [![CircleCI](https://circleci.com/gh/Syncano/syncano-client-js/tree/master.svg?style=shield)](https://circleci.com/gh/Syncano/syncano-client-js/tree/master)
 
 # Syncano Client Library
 
@@ -45,6 +45,10 @@ const s = new Syncano('MY_INSTANCE_NAME')
 
 
 ## Methods
+
+### `s(endpoint, data?, options?)`
+
+Alias of `s.post` method.
 
 ### `s.login(username, password)`
 
