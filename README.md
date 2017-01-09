@@ -1,5 +1,4 @@
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
-
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)   [![CircleCI](https://circleci.com/gh/Syncano/syncano-client-js.svg?style=shield&circle-token=2efee697e0cee80591aec86e022a9dbe0b3b25b8)](https://circleci.com/gh/Syncano/syncano-client-js)
 # Syncano Client Library
 
 This library enables you to interact with the Syncano Sockets via Javascript.
