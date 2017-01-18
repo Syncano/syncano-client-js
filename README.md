@@ -123,3 +123,14 @@ Send `PUT` request to Syncano Socket. View `s.get` method for more info.
 ### `s.patch(endpoint, data?, options?)`
 
 Send `PATCH` request to Syncano Socket. View `s.get` method for more info.
+
+### `s.emit(signal, data?, options?)`
+
+Emit signal using Syncano triggers. 
+
+```js
+s.emit('send_message', {
+  email: 'john.doe@example.com',
+  message: 'Lorem ipsum dolor sit amet.'
+})
+```
