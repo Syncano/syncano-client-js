@@ -12,7 +12,6 @@ describe('SyncanoClient', () => {
   const instanceApiKey = 'test-api-key'
   let client
   let url
-  let triggerUrl
 
   beforeEach(() => {
     client = new SyncanoClient(instanceName, {
