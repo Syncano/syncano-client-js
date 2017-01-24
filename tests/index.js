@@ -190,26 +190,4 @@ describe('SyncanoClient', () => {
       return assert.becomes(client.patch('users'), expected)
     })
   })
-
-  describe('#emit', () => {
-    it('exists in client instance', () => {
-      assert.property(client, 'emit')
-    })
-
-    it('throws error if signal was not passed', () => {
-      assert.throws(() => client.emit(), /signal parameter is required/)
-    })
-
-    it('returns promise', () => {
-      assert.instanceOf(client.emit('send-message'), Promise)
-    })
-
-    it('resolves with valid outpatch', () => {
-      const expected = { signal: 'send-message' }
-
-      fetchMock.post(client.triggerUrl, expected)
-
-      return assert.becomes(client.emit('send-message'), expected)
-    })
-  })
 })

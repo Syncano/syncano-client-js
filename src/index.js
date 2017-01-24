@@ -7,7 +7,6 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   client.baseUrl = options.baseUrl || 'https://api.syncano.rocks/v2/instances/'
   client.loginMethod = options.loginMethod
   client.token = options.token
-  client.triggerUrl = `${client.baseUrl}${client.instanceName}/triggers/emit/`
 
   client.headers = headers => Object.assign({
     'Content-Type': 'application/json',
@@ -105,17 +104,6 @@ client.patch = function (endpoint = required('endpoint'), body = {}, options = {
     method: 'PATCH',
     headers: this.headers(options.headers),
     body,
-    ...options
-  })
-    .then(checkStatus)
-    .then(parseJSON)
-}
-
-client.emit = function (signal = required('signal'), payload = {}, options = {}) {
-  return fetch(this.triggerUrl, {
-    method: 'POST',
-    body: { signal, payload },
-    headers: this.headers(options.headers),
     ...options
   })
     .then(checkStatus)
