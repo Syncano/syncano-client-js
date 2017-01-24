@@ -8,10 +8,17 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   client.loginMethod = options.loginMethod
   client.token = options.token
 
-  client.headers = headers => Object.assign({
-    'Content-Type': 'application/json',
-    'X-API-KEY': client.token
-  }, headers)
+  let defaults = {
+    'Content-Type': 'application/json'
+  }
+
+  if (client.token) {
+    defaults = Object.assign({
+      'X-API-KEY': client.token
+    }, defaults)
+  }
+
+  client.headers = headers => Object.assign(defaults, headers)
 
   return client
 }
