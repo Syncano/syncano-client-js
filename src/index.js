@@ -4,7 +4,7 @@ import { required, checkStatus, parseJSON } from './helpers'
 
 function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   client.instanceName = instanceName
-  client.baseUrl = options.baseUrl || 'https://api.syncano.rocks/v2/instances/'
+  client.baseUrl = options.baseUrl || `https://${instanceName}.syncano.space/`
   client.loginMethod = options.loginMethod
   client.token = options.token
 
@@ -52,7 +52,7 @@ client.login = function (username, password) {
 }
 
 client.url = function (endpoint, query) {
-  const url = `${this.baseUrl}${this.instanceName}/sockets/${endpoint}/`
+  const url = `${this.baseUrl}${endpoint}/`
 
   query = querystring.stringify(query)
 
