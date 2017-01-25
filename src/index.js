@@ -2,14 +2,12 @@ import querystring from 'querystring'
 import 'isomorphic-fetch' // eslint-disable-line import/no-unassigned-import
 import { required, checkStatus, parseJSON } from './helpers'
 
-const { localStorge } = window
-const TOKEN_KEY_NAME = 'syncano_client_token'
-
 function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   client.instanceName = instanceName
   client.baseUrl = options.baseUrl || `https://${instanceName}.syncano.space/`
   client.loginMethod = options.loginMethod
-  client.token = options.token || localStorge.getItem(TOKEN_KEY_NAME)
+  client.setTokenCallback = options.setTokenCallback
+  client.token = options.token
 
   let defaults = {
     'Content-Type': 'application/json'
@@ -76,10 +74,8 @@ client.logout = function () {
 client.setToken = function (token) {
   this.token = token
 
-  if (token) {
-    localStorge.setItem(TOKEN_KEY_NAME, token)
-  } else {
-    localStorge.removeItem(TOKEN_KEY_NAME)
+  if (typeof client.setTokenCallback === 'function') {
+    client.setTokenCallback(token)
   }
 }
 

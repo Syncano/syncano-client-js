@@ -35,6 +35,10 @@ describe('SyncanoClient', () => {
     it('token', () => {
       assert.property(client, 'token')
     })
+
+    it('setTokenCallback', () => {
+      assert.property(client, 'setTokenCallback')
+    })
   })
 
   describe('client', () => {
