@@ -17,7 +17,7 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
 
   if (client.token) {
     defaults = Object.assign({
-      'X-API-KEY': client.token
+      'X-USER-KEY': client.token
     }, defaults)
   }
 
