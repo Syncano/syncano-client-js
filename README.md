@@ -40,9 +40,9 @@ const s = new Syncano('MY_INSTANCE_NAME')
 |-----------|------|-------------|
 | **`instanceName`** | String | Syncano instance name. You can create one using [Syncano CLI](https://github.com/Syncano/syncano-node-cli). |
 | **`options`** | Object | Optional connection config. |
+| **`options.host`** | String | Syncano host name. |
 | **`options.token`** | String | Allows you to initialize authorized connection. |
 | **`options.loginMethod`** |  Function | Define custom login method |
-
 
 ## Methods
 

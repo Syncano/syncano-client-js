@@ -3,8 +3,10 @@ import 'isomorphic-fetch' // eslint-disable-line import/no-unassigned-import
 import { required, checkStatus, parseJSON } from './helpers'
 
 function SyncanoClient(instanceName = required('instanceName'), options = {}) {
+  const host = options.host || 'syncano.space'
+
   client.instanceName = instanceName
-  client.baseUrl = options.baseUrl || `https://${instanceName}.syncano.space/`
+  client.baseUrl = `https://${instanceName}.${host}/`
   client.loginMethod = options.loginMethod
   client.setTokenCallback = options.setTokenCallback
   client.token = options.token
