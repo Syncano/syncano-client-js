@@ -30,7 +30,7 @@ function client(endpoint = required('endpoint'), body = {}, options = {}) {
   return fetch(this.url(endpoint), {
     method: 'POST',
     headers: this.headers(options.headers),
-    body,
+    body: this.parseBody(body),
     ...options
   })
     .then(checkStatus)
@@ -69,6 +69,10 @@ client.url = function (endpoint, query) {
   return query ? `${url}${query}` : url
 }
 
+client.parseBody = function (body) {
+  return typeof body === 'object' ? JSON.stringify(body) : body
+}
+
 client.logout = function () {
   this.token = undefined
 }
@@ -95,7 +99,7 @@ client.delete = function (endpoint = required('endpoint'), body = {}, options = 
   return fetch(this.url(endpoint), {
     method: 'DELETE',
     headers: this.headers(options.headers),
-    body,
+    body: this.parseBody(body),
     ...options
   })
     .then(checkStatus)
@@ -106,7 +110,7 @@ client.put = function (endpoint = required('endpoint'), body = {}, options = {})
   return fetch(this.url(endpoint), {
     method: 'PUT',
     headers: this.headers(options.headers),
-    body,
+    body: this.parseBody(body),
     ...options
   })
     .then(checkStatus)
@@ -117,7 +121,7 @@ client.patch = function (endpoint = required('endpoint'), body = {}, options = {
   return fetch(this.url(endpoint), {
     method: 'PATCH',
     headers: this.headers(options.headers),
-    body,
+    body: this.parseBody(body),
     ...options
   })
     .then(checkStatus)

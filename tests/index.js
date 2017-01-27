@@ -73,6 +73,20 @@ describe('SyncanoClient', () => {
     })
   })
 
+  describe('#parseBody', () => {
+    it('exists in client instance', () => {
+      assert.property(client, 'parseBody')
+    })
+
+    it('return stringified object', () => {
+      const result = client.parseBody({
+        hello: 'world'
+      })
+
+      assert.isString(result)
+    })
+  })
+
   describe('#logout', () => {
     it('exists in client instance', () => {
       assert.property(client, 'logout')
