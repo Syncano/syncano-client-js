@@ -59,6 +59,11 @@ describe('SyncanoClient', () => {
     })
   })
 
+  it('#url', () => {
+    const expected = 'https://test-instance.syncano.space/users/?hello=world'
+    return assert.equal(client.url('users', {hello: 'world'}), expected)
+  })
+
   describe('#setToken', () => {
     it('exists in client instance', () => {
       assert.property(client, 'setToken')

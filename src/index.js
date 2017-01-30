@@ -66,7 +66,7 @@ client.url = function (endpoint, query) {
 
   query = querystring.stringify(query)
 
-  return query ? `${url}${query}` : url
+  return query ? `${url}?${query}` : url
 }
 
 client.parseBody = function (body) {
