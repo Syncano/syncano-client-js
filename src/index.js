@@ -1,4 +1,3 @@
-import querystring from 'querystring'
 import 'isomorphic-fetch' // eslint-disable-line import/no-unassigned-import
 import { required, checkStatus, parseJSON } from './helpers'
 
@@ -11,14 +10,8 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   client.setTokenCallback = options.setTokenCallback
   client.token = options.token
 
-  let defaults = {
+  const defaults = {
     'Content-Type': 'application/json'
-  }
-
-  if (client.token) {
-    defaults = Object.assign({
-      'X-USER-KEY': client.token
-    }, defaults)
   }
 
   client.headers = headers => Object.assign(defaults, headers)
@@ -61,16 +54,27 @@ client.login = function (username, password) {
   return login(username, password)
 }
 
-client.url = function (endpoint, query) {
-  const url = `${this.baseUrl}${endpoint}/`
-
-  query = querystring.stringify(query)
-
-  return query ? `${url}?${query}` : url
+client.url = function (endpoint) {
+  return `${this.baseUrl}${endpoint}/`
 }
 
 client.parseBody = function (body) {
-  return typeof body === 'object' ? JSON.stringify(body) : body
+  if (typeof body === 'object') {
+    let data = {
+      ...body
+    }
+
+    if (client.token) {
+      data = {
+        ...data,
+        _user_key: client.token // eslint-disable-line camelcase
+      }
+    }
+
+    return JSON.stringify(data)
+  }
+
+  return body
 }
 
 client.logout = function () {
@@ -86,46 +90,19 @@ client.setToken = function (token) {
 }
 
 client.get = function (endpoint = required('endpoint'), body = {}, options = {}) {
-  return fetch(this.url(endpoint, body), {
-    method: 'GET',
-    headers: this.headers(options.headers),
-    ...options
-  })
-    .then(checkStatus)
-    .then(parseJSON)
+  return this.post(endpoint, { ...body, _method: 'GET' }, options)
 }
 
 client.delete = function (endpoint = required('endpoint'), body = {}, options = {}) {
-  return fetch(this.url(endpoint), {
-    method: 'DELETE',
-    headers: this.headers(options.headers),
-    body: this.parseBody(body),
-    ...options
-  })
-    .then(checkStatus)
-    .then(parseJSON)
+  return this.post(endpoint, { ...body, _method: 'DELETE' }, options)
 }
 
 client.put = function (endpoint = required('endpoint'), body = {}, options = {}) {
-  return fetch(this.url(endpoint), {
-    method: 'PUT',
-    headers: this.headers(options.headers),
-    body: this.parseBody(body),
-    ...options
-  })
-    .then(checkStatus)
-    .then(parseJSON)
+  return this.post(endpoint, { ...body, _method: 'PUT' }, options)
 }
 
 client.patch = function (endpoint = required('endpoint'), body = {}, options = {}) {
-  return fetch(this.url(endpoint), {
-    method: 'PATCH',
-    headers: this.headers(options.headers),
-    body: this.parseBody(body),
-    ...options
-  })
-    .then(checkStatus)
-    .then(parseJSON)
+  return this.post(endpoint, { ...body, _method: 'PATCH' }, options)
 }
 
 export default SyncanoClient

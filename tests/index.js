@@ -53,16 +53,22 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.get(url('users'), expected)
+      fetchMock.post(url('users'), expected)
 
       return assert.becomes(client.get('users'), expected)
     })
   })
 
   describe('#url', () => {
-    const expected = 'https://test-instance.syncano.space/users/?hello=world'
+    it('exists in client instance', () => {
+      assert.property(client, 'url')
+    })
 
-    assert.equal(client.url('users', {hello: 'world'}), expected)
+    it('returns valid url', () => {
+      const expected = 'https://test-instance.syncano.space/users/'
+
+      assert.equal(url('users'), expected)
+    })
   })
 
   describe('#setToken', () => {
@@ -121,7 +127,7 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.get(url('users'), expected)
+      fetchMock.post(url('users'), expected)
 
       return assert.becomes(client.get('users'), expected)
     })
@@ -165,7 +171,7 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.delete(url('users'), expected)
+      fetchMock.post(url('users'), expected)
 
       return assert.becomes(client.delete('users'), expected)
     })
@@ -187,7 +193,7 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.put(url('users'), expected)
+      fetchMock.post(url('users'), expected)
 
       return assert.becomes(client.put('users'), expected)
     })
@@ -209,7 +215,7 @@ describe('SyncanoClient', () => {
     it('resolves with valid outpatch', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.patch(url('users'), expected)
+      fetchMock.post(url('users'), expected)
 
       return assert.becomes(client.patch('users'), expected)
     })
