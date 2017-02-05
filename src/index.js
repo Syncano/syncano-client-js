@@ -105,4 +105,34 @@ client.patch = function (endpoint = required('endpoint'), body = {}, options = {
   return this.post(endpoint, { ...body, _method: 'PATCH' }, options)
 }
 
+client.subscribe = function (endpoint = required('endpoint'), callback = required('callback')) {
+  let shouldStop = false
+
+  const poll = () => {
+    const repeat = response => {
+      if (!shouldStop) {
+        poll()
+        callback(response)
+      }
+    }
+
+    fetch(this.url(endpoint), {
+      method: 'GET',
+      headers: this.headers()
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(repeat)
+      .catch(repeat)
+  }
+
+  poll()
+
+  return {
+    stop: () => {
+      shouldStop = true
+    }
+  }
+}
+
 export default SyncanoClient

@@ -212,12 +212,30 @@ describe('SyncanoClient', () => {
       assert.instanceOf(client.patch('users'), Promise)
     })
 
-    it('resolves with valid outpatch', () => {
+    it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
       fetchMock.post(url('users'), expected)
 
       return assert.becomes(client.patch('users'), expected)
+    })
+  })
+
+  describe('#subscribe', () => {
+    it('exists in client instance', () => {
+      assert.property(client, 'subscribe')
+    })
+
+    it('throws error if endpoint was not passed', () => {
+      assert.throws(() => client.subscribe(), /endpoint parameter is required/)
+    })
+
+    it('throws error if callback was not passed', () => {
+      assert.throws(() => client.subscribe('example-socket/example-endpoint'), /callback parameter is required/)
+    })
+
+    it('returns object', () => {
+      assert.instanceOf(client.subscribe('example-socket/example-endpoint', () => {}), Object)
     })
   })
 })
