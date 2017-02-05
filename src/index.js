@@ -106,31 +106,38 @@ client.patch = function (endpoint = required('endpoint'), body = {}, options = {
 }
 
 client.subscribe = function (endpoint = required('endpoint'), callback = required('callback')) {
-  let shouldStop = false
+  let abort = false
+  const url = this.url(endpoint)
+  const options = {
+    method: 'GET',
+    headers: this.headers()
+  };
 
-  const poll = () => {
-    const repeat = response => {
-      if (!shouldStop) {
-        poll()
-        callback(response)
-      }
-    }
+  (function loop() {
+    fetch(url, options)
+      .then(response => {
+        if (abort) {
+          return
+        }
 
-    fetch(this.url(endpoint), {
-      method: 'GET',
-      headers: this.headers()
-    })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then(repeat)
-      .catch(repeat)
-  }
+        if (response.status !== 200) {
+          return loop()
+        }
 
-  poll()
+        loop()
+
+        response.json().then(callback)
+      })
+      .catch(err => {
+        if (/Failed to fetch/.test(err)) {
+          loop()
+        }
+      })
+  })()
 
   return {
     stop: () => {
-      shouldStop = true
+      abort = true
     }
   }
 }
