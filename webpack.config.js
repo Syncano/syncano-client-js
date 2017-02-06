@@ -3,13 +3,7 @@ const webpack = require('webpack')
 
 module.exports = [
   {
-    name: 'package',
-    entry: [
-      'isomorphic-fetch',
-      'es6-promise',
-      './src/index.js'
-    ],
-    target: 'web',
+    entry: './src/index.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'syncano-client.js',
