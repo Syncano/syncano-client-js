@@ -58,8 +58,8 @@ describe('SyncanoClient', () => {
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
-      return client.get('users').then(({ data }) => {
-        assert.deepEqual(data, expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
       })
     })
   })
@@ -120,8 +120,8 @@ describe('SyncanoClient', () => {
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
-      return client.get('users').then(({ data }) => {
-        assert.deepEqual(data, expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
       })
     })
   })
@@ -144,8 +144,8 @@ describe('SyncanoClient', () => {
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
-      return client.get('users').then(({ data }) => {
-        assert.deepEqual(data, expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
       })
     })
   })
@@ -168,8 +168,8 @@ describe('SyncanoClient', () => {
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
-      return client.get('users').then(({ data }) => {
-        assert.deepEqual(data, expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
       })
     })
   })
@@ -192,8 +192,8 @@ describe('SyncanoClient', () => {
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
-      return client.get('users').then(({ data }) => {
-        assert.deepEqual(data, expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
       })
     })
   })
@@ -216,8 +216,8 @@ describe('SyncanoClient', () => {
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
-      return client.get('users').then(({ data }) => {
-        assert.deepEqual(data, expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
       })
     })
   })
