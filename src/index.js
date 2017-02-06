@@ -34,6 +34,7 @@ function client(endpoint = required('endpoint'), data = {}, options = {}) {
     transformRequest,
     ...options
   })
+    .then(response => response.data)
 }
 
 client.post = client
