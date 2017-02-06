@@ -1,4 +1,4 @@
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)   [![CircleCI](https://circleci.com/gh/Syncano/syncano-client-js.svg?style=shield&circle-token=2efee697e0cee80591aec86e022a9dbe0b3b25b8)](https://circleci.com/gh/Syncano/syncano-client-js)   [![codecov](https://codecov.io/gh/Syncano/syncano-client-js/branch/master/graph/badge.svg)](https://codecov.io/gh/Syncano/syncano-client-js)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)   [![CircleCI](https://circleci.com/gh/Syncano/syncano-client-js.svg?style=shield&circle-token=2efee697e0cee80591aec86e022a9dbe0b3b25b8)](https://circleci.com/gh/Syncano/syncano-client-js)   [![codecov](https://codecov.io/gh/Syncano/syncano-client-js/branch/devel/graph/badge.svg)](https://codecov.io/gh/Syncano/syncano-client-js)
 
 # Syncano Client Library
 
@@ -17,7 +17,7 @@ The library supports the CommonJS syntax:
 ```js
 var Syncano = require('syncano-client');
 ```
-    
+
 You can also use it with ES6 modules:
 
 ```js
@@ -80,7 +80,7 @@ s.setToken()
 
 ### `s.get(endpoint, data?, options?)`
 
-Send `GET` request to Syncano socket. 
+Send `GET` request to Syncano socket.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
