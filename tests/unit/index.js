@@ -1,7 +1,7 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const fetchMock = require('fetch-mock')
-const SyncanoClient = require('../src').default
+const SyncanoClient = require('../../src').default
 
 chai.use(chaiAsPromised)
 
