@@ -10,6 +10,10 @@ This library enables you to interact with the Syncano Sockets via Javascript.
 
     npm install syncano --save
 
+ **Also available at JSDELIVR**
+
+    http://www.jsdelivr.com/projects/syncano-client-js
+
 **Usage**
 
 The library supports the CommonJS syntax:
