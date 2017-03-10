@@ -1,7 +1,10 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
-const fetchMock = require('fetch-mock')
+const axios = require('axios')
+const MockAdapter = require('axios-mock-adapter')
 const SyncanoClient = require('../../src').default
+
+const axiosMock = new MockAdapter(axios)
 
 chai.use(chaiAsPromised)
 
@@ -21,7 +24,7 @@ describe('SyncanoClient', () => {
     url = client.url.bind(client)
   })
 
-  afterEach(() => fetchMock.restore())
+  // afterEach(() => axiosMock.restore())
 
   describe('has property:', () => {
     it('instanceName', () => {
@@ -53,9 +56,11 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.post(url('users'), expected)
+      axiosMock.onPost(url('users')).reply(200, expected)
 
-      return assert.becomes(client.get('users'), expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
+      })
     })
   })
 
@@ -82,20 +87,6 @@ describe('SyncanoClient', () => {
       client.setToken(expected)
 
       assert.equal(client.token, expected)
-    })
-  })
-
-  describe('#parseBody', () => {
-    it('exists in client instance', () => {
-      assert.property(client, 'parseBody')
-    })
-
-    it('return stringified object', () => {
-      const result = client.parseBody({
-        hello: 'world'
-      })
-
-      assert.isString(result)
     })
   })
 
@@ -127,9 +118,11 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.post(url('users'), expected)
+      axiosMock.onPost(url('users')).reply(200, expected)
 
-      return assert.becomes(client.get('users'), expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
+      })
     })
   })
 
@@ -149,9 +142,11 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.post(url('users'), expected)
+      axiosMock.onPost(url('users')).reply(200, expected)
 
-      return assert.becomes(client.post('users'), expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
+      })
     })
   })
 
@@ -171,9 +166,11 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.post(url('users'), expected)
+      axiosMock.onPost(url('users')).reply(200, expected)
 
-      return assert.becomes(client.delete('users'), expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
+      })
     })
   })
 
@@ -193,9 +190,11 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.post(url('users'), expected)
+      axiosMock.onPost(url('users')).reply(200, expected)
 
-      return assert.becomes(client.put('users'), expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
+      })
     })
   })
 
@@ -215,9 +214,11 @@ describe('SyncanoClient', () => {
     it('resolves with valid output', () => {
       const expected = { hello: 'world' }
 
-      fetchMock.post(url('users'), expected)
+      axiosMock.onPost(url('users')).reply(200, expected)
 
-      return assert.becomes(client.patch('users'), expected)
+      return client.get('users').then(response => {
+        assert.deepEqual(response, expected)
+      })
     })
   })
 

@@ -105,13 +105,11 @@ s.get('countries/list', { order_by: 'name' })
 s.get('countries/list', {}, {
   headers: {
     'Content-Type': 'application/json'
-  },
-  mode: 'cors',
-  cache: 'default'
+  }
 })
 ```
 
-For more options, view official [fetch documentation](https://fetch.spec.whatwg.org/)
+For more options, view [axios documentation](https://www.npmjs.com/package/axios)
 
 ### `s.post(endpoint, data?, options?)`
 
@@ -128,3 +126,16 @@ Send `PUT` request to Syncano Socket. View `s.get` method for more info.
 ### `s.patch(endpoint, data?, options?)`
 
 Send `PATCH` request to Syncano Socket. View `s.get` method for more info.
+
+### `s.subscribe(endpoint, callback)`
+
+Subscribe to given Syncano endpoint. Callback is fired each time you receive message from endpoint.
+
+
+```js
+// chat - socket name
+// messages/poll - endpoint name
+s.subscribe('chat/messages/poll', message => {
+  // Handle message
+})
+```

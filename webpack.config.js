@@ -3,12 +3,7 @@ const webpack = require('webpack')
 
 module.exports = [
   {
-    name: 'package',
-    entry: [
-      'isomorphic-fetch',
-      'es6-promise',
-      './src'
-    ],
+    entry: './src',
     target: 'web',
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -37,11 +32,7 @@ module.exports = [
   },
   {
     name: 'uglified',
-    entry: [
-      'isomorphic-fetch',
-      'es6-promise',
-      './src'
-    ],
+    entry: './src',
     target: 'web',
     output: {
       path: path.resolve(__dirname, 'dist'),

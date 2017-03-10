@@ -1,11 +1,12 @@
 {
   "name": "syncano-client",
-  "version": "0.13.2-0",
+  "version": "0.15.1",
   "description": "Interact with your Syncano Sockets.",
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
     "build": "npm-run-all build:*",
+    "build:dist": "webpack",
     "build:lib": "babel src --out-dir lib",
     "build:docs": "jsdoc -c ./jsdoc.json -t ./node_modules/ink-docstrap/template -R README.md -d ./docs -r ./src -u ./tutorials",
     "clean": "npm-run-all clean:*",
@@ -72,6 +73,7 @@
     ]
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.7.1",
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
@@ -85,7 +87,6 @@
     "codecov": "^1.0.1",
     "cross-env": "^3.1.4",
     "exports-loader": "^0.6.3",
-    "fetch-mock": "^5.8.0",
     "imports-loader": "^0.7.0",
     "ink-docstrap": "^1.3.0",
     "jsdoc": "^3.4.3",
@@ -97,8 +98,6 @@
     "xo": "^0.17.1"
   },
   "dependencies": {
-    "es6-promise": "^4.0.5",
-    "isomorphic-fetch": "^2.2.1",
-    "querystring": "^0.2.0"
+    "axios": "^0.15.3"
   }
 }

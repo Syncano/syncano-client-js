@@ -1,5 +1,4 @@
-import 'isomorphic-fetch' // eslint-disable-line import/no-unassigned-import
-import { required, checkStatus, parseJSON } from './helpers'
+import fetch from 'axios'
 
 function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   const host = options.host || 'syncano.space'
@@ -10,40 +9,42 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   client.setTokenCallback = options.setTokenCallback
   client.token = options.token
 
-  const defaults = {
-    'Content-Type': 'application/json'
-  }
-
-  client.headers = headers => Object.assign(defaults, headers)
+  client.headers = headers => Object.assign({}, headers)
 
   return client
 }
 
-function client(endpoint = required('endpoint'), body = {}, options = {}) {
-  return fetch(this.url(endpoint), {
+function client(endpoint = required('endpoint'), data = {}, options = {}) {
+  const url = this.url(endpoint)
+  const headers = this.headers(options.headers)
+  const transformRequest = [function (data) {
+    const token = client.token ? { _user_key: client.token } : {}  // eslint-disable-line camelcase
+
+    return JSON.stringify({
+      ...data,
+      ...token
+    })
+  }]
+
+  return fetch({
     method: 'POST',
-    headers: this.headers(options.headers),
-    body: this.parseBody(body),
+    url,
+    data,
+    headers,
+    transformRequest,
     ...options
   })
-    .then(checkStatus)
-    .then(parseJSON)
+    .then(response => response.data)
 }
 
 client.post = client
 
 client.login = function (username, password) {
   const login = this.loginMethod ? this.loginMethod : (username, password) => {
-    const authUrl = `${this.baseUrl}${this.instanceName}/user/auth/`
-    const body = JSON.stringify({ username, password })
-    const options = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body
-    }
+    const url = `${this.baseUrl}${this.instanceName}/users/auth/`
+    const data = JSON.stringify({ username, password })
 
-    return fetch(authUrl, options)
+    return fetch({ url, data })
       .then(user => {
         this.setToken(user.token)
 
@@ -58,25 +59,6 @@ client.url = function (endpoint) {
   return `${this.baseUrl}${endpoint}/`
 }
 
-client.parseBody = function (body) {
-  if (typeof body === 'object') {
-    let data = {
-      ...body
-    }
-
-    if (client.token) {
-      data = {
-        ...data,
-        _user_key: client.token // eslint-disable-line camelcase
-      }
-    }
-
-    return JSON.stringify(data)
-  }
-
-  return body
-}
-
 client.logout = function () {
   this.token = undefined
 }
@@ -89,20 +71,20 @@ client.setToken = function (token) {
   }
 }
 
-client.get = function (endpoint = required('endpoint'), body = {}, options = {}) {
-  return this.post(endpoint, { ...body, _method: 'GET' }, options)
+client.get = function (endpoint = required('endpoint'), data = {}, options = {}) {
+  return this.post(endpoint, { ...data, _method: 'GET' }, options)
 }
 
-client.delete = function (endpoint = required('endpoint'), body = {}, options = {}) {
-  return this.post(endpoint, { ...body, _method: 'DELETE' }, options)
+client.delete = function (endpoint = required('endpoint'), data = {}, options = {}) {
+  return this.post(endpoint, { ...data, _method: 'DELETE' }, options)
 }
 
-client.put = function (endpoint = required('endpoint'), body = {}, options = {}) {
-  return this.post(endpoint, { ...body, _method: 'PUT' }, options)
+client.put = function (endpoint = required('endpoint'), data = {}, options = {}) {
+  return this.post(endpoint, { ...data, _method: 'PUT' }, options)
 }
 
-client.patch = function (endpoint = required('endpoint'), body = {}, options = {}) {
-  return this.post(endpoint, { ...body, _method: 'PATCH' }, options)
+client.patch = function (endpoint = required('endpoint'), data = {}, options = {}) {
+  return this.post(endpoint, { ...data, _method: 'PATCH' }, options)
 }
 
 client.subscribe = function (endpoint = required('endpoint'), callback = required('callback')) {
@@ -110,6 +92,7 @@ client.subscribe = function (endpoint = required('endpoint'), callback = require
   const url = this.url(endpoint)
   const options = {
     method: 'GET',
+    timeout: 1000 * 60 * 5, // 5 minutes
     headers: this.headers()
   };
 
@@ -120,16 +103,15 @@ client.subscribe = function (endpoint = required('endpoint'), callback = require
           return
         }
 
-        if (response.status !== 200) {
-          return loop()
-        }
-
         loop()
 
-        response.json().then(callback)
+        callback(response.data)
       })
       .catch(err => {
-        if (/Failed to fetch/.test(err)) {
+        const isNetworkError = /(Network Error)|(timeout)/.test(err)
+        const isNotAborted = abort === false
+
+        if (isNetworkError && isNotAborted) {
           loop()
         }
       })
@@ -140,6 +122,10 @@ client.subscribe = function (endpoint = required('endpoint'), callback = require
       abort = true
     }
   }
+}
+
+function required(param) {
+  throw new Error(`${param} parameter is required by SyncanoClient`)
 }
 
 export default SyncanoClient
