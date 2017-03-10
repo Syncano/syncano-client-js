@@ -6,13 +6,15 @@ npm-debug.log*
 # Dependency directories
 node_modules
 
+# Docs
+docs
+
 # Other
 example
 *.sublime-*
 
 # Build
 lib
-dist
 
 # Yarn Integrity file
 .yarn-integrity
