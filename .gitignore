@@ -12,6 +12,7 @@ docs
 # Other
 example
 *.sublime-*
+**.DS_Store
 
 # Build
 lib
