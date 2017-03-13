@@ -6,6 +6,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "npm-run-all build:*",
+    "build:dist": "webpack",
     "build:lib": "babel src --out-dir lib",
     "build:docs": "jsdoc -c ./jsdoc.json -t ./node_modules/ink-docstrap/template -R README.md -d ./docs -r ./src -u ./tutorials",
     "clean": "npm-run-all clean:*",

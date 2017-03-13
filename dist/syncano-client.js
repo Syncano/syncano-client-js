@@ -39,7 +39,8 @@ var SyncanoClient = function(e) {
         return "undefined" != typeof FormData && e instanceof FormData;
     }
     function isArrayBufferView(e) {
-        return "undefined" != typeof ArrayBuffer && ArrayBuffer.isView ? ArrayBuffer.isView(e) : e && e.buffer && e.buffer instanceof ArrayBuffer;
+        var t;
+        return t = "undefined" != typeof ArrayBuffer && ArrayBuffer.isView ? ArrayBuffer.isView(e) : e && e.buffer && e.buffer instanceof ArrayBuffer;
     }
     function isString(e) {
         return "string" == typeof e;
@@ -48,7 +49,7 @@ var SyncanoClient = function(e) {
         return "number" == typeof e;
     }
     function isUndefined(e) {
-        return void 0 === e;
+        return "undefined" == typeof e;
     }
     function isObject(e) {
         return null !== e && "object" == typeof e;
@@ -78,7 +79,7 @@ var SyncanoClient = function(e) {
         return "undefined" != typeof window && "undefined" != typeof document && "function" == typeof document.createElement;
     }
     function forEach(e, t) {
-        if (null !== e && void 0 !== e) if ("object" == typeof e || isArray(e) || (e = [ e ]), 
+        if (null !== e && "undefined" != typeof e) if ("object" == typeof e || isArray(e) || (e = [ e ]), 
         isArray(e)) for (var n = 0, r = e.length; n < r; n++) t.call(null, e[n], n, e); else for (var o in e) Object.prototype.hasOwnProperty.call(e, o) && t.call(null, e[o], o, e);
     }
     function merge() {
@@ -90,7 +91,7 @@ var SyncanoClient = function(e) {
     }
     function extend(e, t, n) {
         return forEach(t, function(t, o) {
-            e[o] = n && "function" == typeof t ? r(t, n) : t;
+            n && "function" == typeof t ? e[o] = r(t, n) : e[o] = t;
         }), e;
     }
     var r = n(6), o = Object.prototype.toString;
@@ -123,7 +124,7 @@ var SyncanoClient = function(e) {
         }
         function getDefaultAdapter() {
             var e;
-            return "undefined" != typeof XMLHttpRequest ? e = n(2) : void 0 !== t && (e = n(2)), 
+            return "undefined" != typeof XMLHttpRequest ? e = n(2) : "undefined" != typeof t && (e = n(2)), 
             e;
         }
         var r = n(0), o = n(23), i = /^\)\]\}',?\n/, a = {
@@ -180,15 +181,15 @@ var SyncanoClient = function(e) {
                 if (h.open(e.method.toUpperCase(), i(e.url, e.params, e.paramsSerializer), !0), 
                 h.timeout = e.timeout, h[m] = function() {
                     if (h && (4 === h.readyState || g) && (0 !== h.status || h.responseURL && 0 === h.responseURL.indexOf("file:"))) {
-                        var t = "getAllResponseHeaders" in h ? a(h.getAllResponseHeaders()) : null;
-                        o(f, l, {
-                            data: e.responseType && "text" !== e.responseType ? h.response : h.responseText,
+                        var t = "getAllResponseHeaders" in h ? a(h.getAllResponseHeaders()) : null, n = e.responseType && "text" !== e.responseType ? h.response : h.responseText, r = {
+                            data: n,
                             status: 1223 === h.status ? 204 : h.status,
                             statusText: 1223 === h.status ? "No Content" : h.statusText,
                             headers: t,
                             config: e,
                             request: h
-                        }), h = null;
+                        };
+                        o(f, l, r), h = null;
                     }
                 }, h.onerror = function() {
                     l(s("Network Error", e)), h = null;
@@ -199,7 +200,7 @@ var SyncanoClient = function(e) {
                     _ && (d[e.xsrfHeaderName] = _);
                 }
                 if ("setRequestHeader" in h && r.forEach(d, function(e, t) {
-                    void 0 === p && "content-type" === t.toLowerCase() ? delete d[t] : h.setRequestHeader(t, e);
+                    "undefined" == typeof p && "content-type" === t.toLowerCase() ? delete d[t] : h.setRequestHeader(t, e);
                 }), e.withCredentials && (h.withCredentials = !0), e.responseType) try {
                     h.responseType = e.responseType;
                 } catch (e) {
@@ -230,7 +231,8 @@ var SyncanoClient = function(e) {
     "use strict";
     var r = n(14);
     e.exports = function(e, t, n, o) {
-        return r(new Error(e), t, n, o);
+        var i = new Error(e);
+        return r(i, t, n, o);
     };
 }, function(e, t, n) {
     "use strict";
@@ -354,11 +356,11 @@ var SyncanoClient = function(e) {
     CancelToken.prototype.throwIfRequested = function() {
         if (this.reason) throw this.reason;
     }, CancelToken.source = function() {
-        var e;
+        var e, t = new CancelToken(function(t) {
+            e = t;
+        });
         return {
-            token: new CancelToken(function(t) {
-                e = t;
-            }),
+            token: t,
             cancel: e
         };
     }, e.exports = CancelToken;
@@ -425,11 +427,13 @@ var SyncanoClient = function(e) {
     }
     var r = n(0), o = n(16), i = n(4), a = n(1);
     e.exports = function(e) {
-        return throwIfCancellationRequested(e), e.headers = e.headers || {}, e.data = o(e.data, e.headers, e.transformRequest), 
+        throwIfCancellationRequested(e), e.headers = e.headers || {}, e.data = o(e.data, e.headers, e.transformRequest), 
         e.headers = r.merge(e.headers.common || {}, e.headers[e.method] || {}, e.headers || {}), 
         r.forEach([ "delete", "get", "head", "post", "put", "patch", "common" ], function(t) {
             delete e.headers[t];
-        }), (e.adapter || a.adapter)(e).then(function(t) {
+        });
+        var t = e.adapter || a.adapter;
+        return t(e).then(function(t) {
             return throwIfCancellationRequested(e), t.data = o(t.data, t.headers, e.transformResponse), 
             t;
         }, function(t) {
@@ -465,7 +469,7 @@ var SyncanoClient = function(e) {
     function btoa(e) {
         for (var t, n, o = String(e), i = "", a = 0, u = r; o.charAt(0 | a) || (u = "=", 
         a % 1); i += u.charAt(63 & t >> 8 - a % 1 * 8)) {
-            if ((n = o.charCodeAt(a += .75)) > 255) throw new E();
+            if (n = o.charCodeAt(a += .75), n > 255) throw new E();
             t = t << 8 | n;
         }
         return i;
@@ -485,7 +489,7 @@ var SyncanoClient = function(e) {
         if (n) o = n(t); else if (r.isURLSearchParams(t)) o = t.toString(); else {
             var i = [];
             r.forEach(t, function(e, t) {
-                null !== e && void 0 !== e && (r.isArray(e) && (t += "[]"), r.isArray(e) || (e = [ e ]), 
+                null !== e && "undefined" != typeof e && (r.isArray(e) && (t += "[]"), r.isArray(e) || (e = [ e ]), 
                 r.forEach(e, function(e) {
                     r.isDate(e) ? e = e.toISOString() : r.isObject(e) && (e = JSON.stringify(e)), i.push(encode(t) + "=" + encode(e));
                 }));
@@ -630,8 +634,7 @@ var SyncanoClient = function(e) {
         return e;
     }, o = n(8), i = _interopRequireDefault(o);
     client.post = client, client.login = function(e, t) {
-        var n = this;
-        return (this.loginMethod ? this.loginMethod : function(e, t) {
+        var n = this, r = this.loginMethod ? this.loginMethod : function(e, t) {
             var r = "" + n.baseUrl + n.instanceName + "/users/auth/", o = JSON.stringify({
                 username: e,
                 password: t
@@ -642,7 +645,8 @@ var SyncanoClient = function(e) {
             }).then(function(e) {
                 return n.setToken(e.token), e;
             });
-        })(e, t);
+        };
+        return r(e, t);
     }, client.url = function(e) {
         return "" + this.baseUrl + e + "/";
     }, client.logout = function() {
