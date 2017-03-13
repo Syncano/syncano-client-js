@@ -16,6 +16,7 @@
     "clean:gh-pages": "rimraf ./node_modules/gh-pages/.cache",
     "prepublish": "npm run build",
     "prebuild": "npm run clean",
+    "preversion": "npm run clean:dist",
     "unit": "cross-env NODE_ENV=test mocha 'tests/unit/**/*.js' --reporter spec --require babel-register",
     "test": "npm-run-all --parallel test:unit test:e2e",
     "test:unit": "cross-env NODE_ENV=test nyc yarn run unit",
