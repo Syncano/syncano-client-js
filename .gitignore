@@ -16,6 +16,7 @@ example
 
 # Build
 lib
+dist
 
 # Yarn Integrity file
 .yarn-integrity
