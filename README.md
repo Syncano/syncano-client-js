@@ -8,11 +8,11 @@ This library enables you to interact with the Syncano Sockets via Javascript.
 
 **Installing from NPM**
 
-    npm install syncano --save
+    npm install syncano-client --save
 
- **Also available at JSDELIVR**
+ **Also available at [JSDELIVR](http://www.jsdelivr.com/projects/syncano-client-js)**
 
-    http://www.jsdelivr.com/projects/syncano-client-js
+    <script src="//cdn.jsdelivr.net/syncano-client-js/latest/syncano-client.min.js"></script>
 
 **Usage**
 
