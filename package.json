@@ -70,7 +70,8 @@
     ],
     "plugins": [
       "transform-object-rest-spread",
-      "transform-class-properties"
+      "transform-class-properties",
+      "add-module-exports"
     ]
   },
   "devDependencies": {
@@ -78,6 +79,7 @@
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.19.0",
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
     "babel-preset-env": "^1.1.4",

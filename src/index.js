@@ -128,4 +128,4 @@ function required(param) {
   throw new Error(`${param} parameter is required by SyncanoClient`)
 }
 
-module.exports = SyncanoClient
+export default SyncanoClient
