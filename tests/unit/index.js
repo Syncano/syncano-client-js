@@ -2,7 +2,7 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const axios = require('axios')
 const MockAdapter = require('axios-mock-adapter')
-const SyncanoClient = require('../../src').default
+const SyncanoClient = require('../../src')
 
 const axiosMock = new MockAdapter(axios)
 
