@@ -87,14 +87,18 @@ client.patch = function (endpoint = required('endpoint'), data = {}, options = {
   return this.post(endpoint, { ...data, _method: 'PATCH' }, options)
 }
 
-client.subscribe = function (endpoint = required('endpoint'), callback = required('callback')) {
+client.subscribe = function (endpoint = required('endpoint'), room, callback) {
   let abort = false
+  const useRoom = Boolean(callback)
   const url = this.url(endpoint)
   const options = {
     method: 'GET',
     timeout: 1000 * 60 * 5, // 5 minutes
-    headers: this.headers()
-  };
+    headers: this.headers(),
+    data: useRoom ? {room} : undefined
+  }
+
+  callback = useRoom ? callback : room;
 
   (function loop() {
     fetch(url, options)
