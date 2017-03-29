@@ -1,3 +1,4 @@
+import querystring from 'querystring'
 import fetch from 'axios'
 
 function SyncanoClient(instanceName = required('instanceName'), options = {}) {
@@ -55,7 +56,11 @@ client.login = function (username, password) {
   return login(username, password)
 }
 
-client.url = function (endpoint) {
+client.url = function (endpoint, data) {
+  if (data) {
+    return `${this.baseUrl}${endpoint}/?${querystring.stringify(data)}`
+  }
+
   return `${this.baseUrl}${endpoint}/`
 }
 
@@ -87,14 +92,17 @@ client.patch = function (endpoint = required('endpoint'), data = {}, options = {
   return this.post(endpoint, { ...data, _method: 'PATCH' }, options)
 }
 
-client.subscribe = function (endpoint = required('endpoint'), callback = required('callback')) {
+client.subscribe = function (endpoint = required('endpoint'), data, callback) {
   let abort = false
-  const url = this.url(endpoint)
+  const hasData = typeof data === 'object' && data !== null
+  const url = this.url(endpoint, data)
   const options = {
     method: 'GET',
     timeout: 1000 * 60 * 5, // 5 minutes
     headers: this.headers()
-  };
+  }
+
+  const cb = hasData ? callback : data;
 
   (function loop() {
     fetch(url, options)
@@ -105,7 +113,7 @@ client.subscribe = function (endpoint = required('endpoint'), callback = require
 
         loop()
 
-        callback(response.data)
+        cb(response.data)
       })
       .catch(err => {
         const isNetworkError = /(Network Error)|(timeout)/.test(err)

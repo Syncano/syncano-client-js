@@ -231,10 +231,6 @@ describe('SyncanoClient', () => {
       assert.throws(() => client.subscribe(), /endpoint parameter is required/)
     })
 
-    it('throws error if callback was not passed', () => {
-      assert.throws(() => client.subscribe('example-socket/example-endpoint'), /callback parameter is required/)
-    })
-
     it('returns object', () => {
       assert.instanceOf(client.subscribe('example-socket/example-endpoint', () => {}), Object)
     })
