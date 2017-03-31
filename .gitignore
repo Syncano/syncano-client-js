@@ -13,6 +13,7 @@ example
 
 # Build
 lib
+e2e-tests
 dist
 
 # Yarn Integrity file
