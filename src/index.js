@@ -105,15 +105,15 @@ client.subscribe = function (endpoint = required('endpoint'), data, callback) {
   const cb = hasData ? callback : data;
 
   (function loop() {
+    if (abort) {
+      return
+    }
+
     fetch(url, options)
       .then(response => {
-        if (abort) {
-          return
-        }
+        cb(response.data)
 
         loop()
-
-        cb(response.data)
       })
       .catch(err => {
         const isNetworkError = /(Network Error)|(timeout)/.test(err)
