@@ -132,6 +132,13 @@ client.subscribe = function (endpoint = required('endpoint'), data, callback) {
   }
 }
 
+client.subscribe.once = function (endpoint = required('endpoint'), data, callback) {
+  const listener = client.subscribe(endpoint, data, response => {
+    listener.abort()
+    callback(response)
+  })
+}
+
 function required(param) {
   throw new Error(`${param} parameter is required by SyncanoClient`)
 }
