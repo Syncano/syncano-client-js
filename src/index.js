@@ -156,7 +156,7 @@ client.subscribe = function (endpoint = required('endpoint'), data, callback) {
 
 client.subscribe.once = function (endpoint = required('endpoint'), data, callback) {
   const listener = client.subscribe(endpoint, data, response => {
-    listener.abort()
+    listener.stop()
     callback(response)
   })
 }
