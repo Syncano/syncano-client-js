@@ -267,9 +267,7 @@ describe('SyncanoClient', () => {
 
       axiosMock.onGet(url('chat/message/history', data)).reply(200, response)
 
-      return client.setLastId('chat/message', data).then(response => {
-        assert.equal(response, expected)
-      })
+      return assert.eventually.equal(client.setLastId('chat/message', data), expected)
     })
   })
 })
