@@ -52,6 +52,7 @@
     ],
     "rules": {
       "object-curly-spacing": 0,
+      "camelcase": 0,
       "no-warning-comments": [
         0,
         {
