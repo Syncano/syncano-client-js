@@ -235,4 +235,40 @@ describe('SyncanoClient', () => {
       assert.instanceOf(client.subscribe('example-socket/example-endpoint', () => {}), Object)
     })
   })
+
+  describe('#setLastId', () => {
+    it('exists in client instance', () => {
+      assert.property(client, 'setLastId')
+    })
+
+    it('returns undefined if data.last_id param is present', () => {
+      const data = {
+        token: 'myLittleToken',
+        // eslint-disable-next-line camelcase
+        last_id: 666
+      }
+
+      assert(client.setLastId('chat/message', data) === undefined)
+    })
+
+    it('returns a Promise if data.last_id param is not present', () => {
+      const data = { token: 'myLittleToken' }
+
+      assert.instanceOf(client.setLastId('chat/message', data), Promise)
+    })
+
+    it('resolves with a valid output', () => {
+      const expected = 42
+      const data = { token: 'myLittleToken' }
+      const response = {
+        objects: [
+          { id: 42 }
+        ]
+      }
+
+      axiosMock.onGet(url('chat/message/history', data)).reply(200, response)
+
+      return assert.eventually.equal(client.setLastId('chat/message', data), expected)
+    })
+  })
 })

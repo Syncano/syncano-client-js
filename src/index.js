@@ -92,19 +92,31 @@ client.patch = function (endpoint = required('endpoint'), data = {}, options = {
   return this.post(endpoint, { ...data, _method: 'PATCH' }, options)
 }
 
+// Used by the client.subscribe method to start polling from the correct id
+client.setLastId = function (endpoint, data) {
+  const url = this.url(`${endpoint}/history`, data)
+  // eslint-disable-next-line camelcase
+  if (data.last_id) {
+    return
+  }
+
+  return fetch(url)
+    .then(response => response.data.objects[0].id)
+}
+
 client.subscribe = function (endpoint = required('endpoint'), data, callback) {
   let abort = false
   const hasData = typeof data === 'object' && data !== null
-  const url = this.url(endpoint, data)
   const options = {
     method: 'GET',
     timeout: 1000 * 60 * 5, // 5 minutes
     headers: this.headers()
   }
 
-  const cb = hasData ? callback : data;
+  let url = this.url(endpoint, data)
+  const cb = hasData ? callback : data
 
-  (function loop() {
+  function loop() {
     if (abort) {
       return
     }
@@ -112,7 +124,9 @@ client.subscribe = function (endpoint = required('endpoint'), data, callback) {
     fetch(url, options)
       .then(response => {
         cb(response.data)
-
+        // eslint-disable-next-line camelcase
+        data.last_id = response.data.id
+        url = client.url(endpoint, data)
         loop()
       })
       .catch(err => {
@@ -123,7 +137,15 @@ client.subscribe = function (endpoint = required('endpoint'), data, callback) {
           loop()
         }
       })
-  })()
+  }
+
+  this.setLastId(endpoint, data)
+    .then(response => {
+      // eslint-disable-next-line camelcase
+      data.last_id = response
+      url = client.url(endpoint, data)
+      loop()
+    })
 
   return {
     stop: () => {
