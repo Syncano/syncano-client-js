@@ -244,6 +244,7 @@ describe('SyncanoClient', () => {
     it('returns undefined if data.last_id param is present', () => {
       const data = {
         token: 'myLittleToken',
+        // eslint-disable-next-line camelcase
         last_id: 666
       }
 

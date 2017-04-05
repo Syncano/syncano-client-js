@@ -95,7 +95,7 @@ client.patch = function (endpoint = required('endpoint'), data = {}, options = {
 // Used by the client.subscribe method to start polling from the correct id
 client.setLastId = function (endpoint, data) {
   const url = this.url(`${endpoint}/history`, data)
-
+  // eslint-disable-next-line camelcase
   if (data.last_id) {
     return
   }
@@ -124,6 +124,7 @@ client.subscribe = function (endpoint = required('endpoint'), data, callback) {
     fetch(url, options)
       .then(response => {
         cb(response.data)
+        // eslint-disable-next-line camelcase
         data.last_id = response.data.id
         url = client.url(endpoint, data)
         loop()
@@ -140,6 +141,7 @@ client.subscribe = function (endpoint = required('endpoint'), data, callback) {
 
   this.setLastId(endpoint, data)
     .then(response => {
+      // eslint-disable-next-line camelcase
       data.last_id = response
       url = client.url(endpoint, data)
       loop()
