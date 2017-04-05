@@ -1,0 +1,2 @@
+- [Quickstart Guide](README.md)
+  - [Syncano Client Library](#syncano-client-library)
