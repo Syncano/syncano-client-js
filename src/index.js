@@ -101,7 +101,10 @@ client.setLastId = function (endpoint, data) {
   }
 
   return fetch(url)
-    .then(response => response.data.objects[0].id)
+    .then(response => {
+      let obj = response.data.objects[0]
+      return obj ? obj.id : null
+    })
 }
 
 client.subscribe = function (endpoint = required('endpoint'), data, callback) {
