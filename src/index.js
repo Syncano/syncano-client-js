@@ -157,10 +157,12 @@ client.subscribe = function (endpoint = required('endpoint'), data, callback) {
   }
 }
 
-client.subscribe.once = function (endpoint = required('endpoint'), data, callback) {
-  const listener = client.subscribe(endpoint, data, response => {
+client.subscribe.once = function (endpoint = required('endpoint'), data = {}, callback) {
+  const hasData = typeof data === 'object' && data !== null
+  const cb = hasData ? callback : data
+  const listener = client.subscribe(endpoint, hasData ? data : {}, response => {
     listener.stop()
-    callback(response)
+    cb(response)
   })
 }
 
