@@ -1,6 +1,6 @@
 {
   "name": "syncano-client",
-  "version": "0.15.2-8",
+  "version": "0.2.0",
   "description": "Interact with your Syncano Sockets.",
   "license": "MIT",
   "main": "lib/index.js",
