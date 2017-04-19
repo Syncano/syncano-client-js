@@ -1,3 +1,4 @@
+import querystring from 'querystring'
 import fetch from 'axios'
 
 function SyncanoClient(instanceName = required('instanceName'), options = {}) {
@@ -55,7 +56,11 @@ client.login = function (username, password) {
   return login(username, password)
 }
 
-client.url = function (endpoint) {
+client.url = function (endpoint, data) {
+  if (data) {
+    return `${this.baseUrl}${endpoint}/?${querystring.stringify(data)}`
+  }
+
   return `${this.baseUrl}${endpoint}/`
 }
 
@@ -87,25 +92,45 @@ client.patch = function (endpoint = required('endpoint'), data = {}, options = {
   return this.post(endpoint, { ...data, _method: 'PATCH' }, options)
 }
 
-client.subscribe = function (endpoint = required('endpoint'), callback = required('callback')) {
+// Used by the client.subscribe method to start polling from the correct id
+client.setLastId = function (endpoint, data) {
+  const url = this.url(`${endpoint}/history`, data)
+  // eslint-disable-next-line camelcase
+  if (data.last_id) {
+    return
+  }
+
+  return fetch(url)
+    .then(response => {
+      const obj = response.data.objects[0]
+      return obj ? obj.id : null
+    })
+}
+
+client.subscribe = function (endpoint = required('endpoint'), data, callback) {
   let abort = false
-  const url = this.url(endpoint)
+  const hasData = typeof data === 'object' && data !== null
   const options = {
     method: 'GET',
     timeout: 1000 * 60 * 5, // 5 minutes
     headers: this.headers()
-  };
+  }
 
-  (function loop() {
+  let url = this.url(endpoint, data)
+  const cb = hasData ? callback : data
+
+  function loop() {
+    if (abort) {
+      return
+    }
+
     fetch(url, options)
       .then(response => {
-        if (abort) {
-          return
-        }
-
+        cb(response.data)
+        // eslint-disable-next-line camelcase
+        data.last_id = response.data.id
+        url = client.url(endpoint, data)
         loop()
-
-        callback(response.data)
       })
       .catch(err => {
         const isNetworkError = /(Network Error)|(timeout)/.test(err)
@@ -115,13 +140,30 @@ client.subscribe = function (endpoint = required('endpoint'), callback = require
           loop()
         }
       })
-  })()
+  }
+
+  this.setLastId(endpoint, data)
+    .then(response => {
+      // eslint-disable-next-line camelcase
+      data.last_id = response
+      url = client.url(endpoint, data)
+      loop()
+    })
 
   return {
     stop: () => {
       abort = true
     }
   }
+}
+
+client.subscribe.once = function (endpoint = required('endpoint'), data = {}, callback) {
+  const hasData = typeof data === 'object' && data !== null
+  const cb = hasData ? callback : data
+  const listener = client.subscribe(endpoint, hasData ? data : {}, response => {
+    listener.stop()
+    cb(response)
+  })
 }
 
 function required(param) {
