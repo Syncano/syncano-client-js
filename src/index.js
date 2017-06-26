@@ -3,6 +3,7 @@ import fetch from 'axios'
 
 function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   const host = options.host || 'syncano.space'
+  const DEFAULT_HEADERS = {'Content-Type': 'application/json'}
 
   client.instanceName = instanceName
   client.baseUrl = `https://${instanceName}.${host}/`
@@ -10,7 +11,7 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   client.setTokenCallback = options.setTokenCallback
   client.token = options.token
 
-  client.headers = headers => Object.assign({}, headers)
+  client.headers = headers => Object.assign({}, DEFAULT_HEADERS, headers)
 
   return client
 }
