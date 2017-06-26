@@ -10,9 +10,9 @@ This library enables you to interact with the Syncano Sockets via Javascript.
 
     npm install syncano-client --save
 
- **Also available at [JSDELIVR](http://www.jsdelivr.com/projects/syncano-client-js)**
+**Also available at [UNPKG](https://unpkg.com/syncano-client)**
 
-    <script src="//cdn.jsdelivr.net/syncano-client-js/latest/syncano-client.min.js"></script>
+    <script src="https://unpkg.com/syncano-client"></script>
 
 **Usage**
 
