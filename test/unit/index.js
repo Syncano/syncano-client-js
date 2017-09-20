@@ -27,8 +27,6 @@ describe('SyncanoClient', () => {
     url = client.url.bind(client)
   })
 
-  // afterEach(() => axiosMock.restore())
-
   describe('has property:', () => {
     it('instanceName', () => {
       assert.property(client, 'instanceName')
