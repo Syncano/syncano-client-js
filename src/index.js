@@ -17,7 +17,7 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
 
   client.login = function (username, password) {
     const login = this.loginMethod ? this.loginMethod : (username, password) => {
-      const url = `${this.baseUrl}${this.instanceName}/users/auth/`
+      const url = `https://api.syncano.io/v2/instances/${this.instanceName}/users/auth/`
       const data = JSON.stringify({ username, password })
 
       return fetch({ url, data })
@@ -146,8 +146,17 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   function client(endpoint = required('endpoint'), data = {}, options = {}) {
     const url = this.url(endpoint)
     const headers = this.headers(options.headers)
+
     const transformRequest = [function (data) {
       const token = client.token ? { _user_key: client.token } : {}  // eslint-disable-line camelcase
+
+      if (data instanceof window.FormData) {
+        if (client.token) {
+          data.append('_user_key', client.token)
+        }
+
+        return data
+      }
 
       return JSON.stringify({
         ...data,
