@@ -1,3 +1,4 @@
+const jsdom = require('mocha-jsdom')
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const axios = require('axios')
@@ -15,6 +16,8 @@ describe('SyncanoClient', () => {
   const instanceApiKey = 'test-api-key'
   let client
   let url
+
+  jsdom()
 
   beforeEach(() => {
     client = new SyncanoClient(instanceName, {
