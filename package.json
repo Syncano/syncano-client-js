@@ -40,7 +40,7 @@
     "space": true,
     "esnext": true,
     "module": false,
-    "env": [
+    "envs": [
       "browser"
     ],
     "globals": [

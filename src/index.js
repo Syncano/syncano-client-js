@@ -150,14 +150,6 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
     const transformRequest = [function (data) {
       const token = client.token ? { _user_key: client.token } : {}  // eslint-disable-line camelcase
 
-      if (data instanceof window.FormData) {
-        if (client.token) {
-          data.append('_user_key', client.token)
-        }
-
-        return data
-      }
-
       return JSON.stringify({
         ...data,
         ...token
