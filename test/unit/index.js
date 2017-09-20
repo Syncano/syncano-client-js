@@ -241,12 +241,13 @@ describe('SyncanoClient', () => {
     it('returns object', () => {
       axiosMock
         .onGet(url('example-socket/example-endpoint/history', {}))
-        .reply(200, {objects: [{id: 100}]})
+        .reply(200, { objects: [{ id: 100 }] })
 
       axiosMock.onGet(url('example-socket/example-endpoint/?')).reply(200)
 
       assert.instanceOf(
-        client.subscribe('example-socket/example-endpoint', () => {}), Object
+        client.subscribe('example-socket/example-endpoint', () => {}),
+        Object
       )
     })
   })
@@ -269,12 +270,10 @@ describe('SyncanoClient', () => {
     it('returns a Promise if data.last_id param is not present', () => {
       const data = { token: 'myLittleToken' }
       const response = {
-        objects: [{id: 42}]
+        objects: [{ id: 42 }]
       }
 
-      axiosMock
-        .onGet(url('chat/message/history', data))
-        .reply(200, response)
+      axiosMock.onGet(url('chat/message/history', data)).reply(200, response)
 
       assert.instanceOf(client.setLastId('chat/message', data), Promise)
     })
@@ -283,12 +282,15 @@ describe('SyncanoClient', () => {
       const expected = 42
       const data = { token: 'myLittleToken' }
       const response = {
-        objects: [{id: 42}]
+        objects: [{ id: 42 }]
       }
 
       axiosMock.onGet(url('chat/message/history', data)).reply(200, response)
 
-      return assert.eventually.equal(client.setLastId('chat/message', data), expected)
+      return assert.eventually.equal(
+        client.setLastId('chat/message', data),
+        expected
+      )
     })
   })
 })
