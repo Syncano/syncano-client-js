@@ -17,9 +17,6 @@ dependencies:
     - yarn install
 
 general:
-  branches:
-    ignore:
-      - gh-pages
   artifacts:
     - "coverage/"
 
