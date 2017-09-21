@@ -3,7 +3,7 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const axios = require('axios')
 const MockAdapter = require('axios-mock-adapter')
-const SyncanoClient = require('../../src')
+const SyncanoClient = require('../src')
 
 const axiosMock = new MockAdapter(axios)
 
@@ -11,7 +11,7 @@ chai.use(chaiAsPromised)
 
 const { assert } = chai
 
-describe('SyncanoClient', () => {
+describe('Syncano client units', () => {
   const instanceName = 'test-instance'
   const instanceApiKey = 'test-api-key'
   let client
