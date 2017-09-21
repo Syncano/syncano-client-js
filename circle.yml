@@ -24,9 +24,6 @@ general:
     - "coverage/"
 
 test:
-  override:
-    - yarn run lint
-    - yarn run test
   post:
     - yarn run test:coverage
 
