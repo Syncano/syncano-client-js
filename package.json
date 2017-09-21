@@ -18,9 +18,7 @@
     "lint": "standard --fix",
     "format": "prettier --write --single-quote --no-semi --write *.js {src,test}/**/*.js",
     "release:git-config": "git config --global user.email $GITHUB_EMAIL && git config --global user.name $GITHUB_NAME",
-    "release:npm-token": "echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\nprogress=false\" > ~/.npmrc",
-    "release:beta": "npm version prerelease -m \"chore: bump version to %s [ci skip]\"",
-    "release": "npm version patch -m \"chore: bump version to %s [ci skip]\""
+    "release:npm-token": "echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\nprogress=false\" > ~/.npmrc"
   },
   "lint-staged": {
     "*.js": [
