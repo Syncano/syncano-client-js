@@ -17,16 +17,10 @@ dependencies:
     - yarn install
 
 general:
-  branches:
-    ignore:
-      - gh-pages
   artifacts:
     - "coverage/"
 
 test:
-  override:
-    - yarn run lint
-    - yarn run test
   post:
     - yarn run test:coverage
 
@@ -36,14 +30,14 @@ deployment:
     commands:
       - yarn run release:git-config
       - yarn run release:npm-token
-      - yarn run release:beta
+      - npm version prerelease -m "bump version to %s [ci skip]"
       - npm publish --tag beta
   production:
     branch: master
     commands:
       - yarn run release:git-config
       - yarn run release:npm-token
-      - yarn run release
+      - npm version patch -m "bump version to %s [ci skip]"
       - npm publish
 
 experimental:

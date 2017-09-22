@@ -10,22 +10,22 @@ This library enables you to interact with the Syncano Sockets via Javascript.
 
     npm install syncano-client --save
 
- **Also available at [JSDELIVR](http://www.jsdelivr.com/projects/syncano-client-js)**
+**Also available at [UNPKG](https://unpkg.com/syncano-client)**
 
-    <script src="//cdn.jsdelivr.net/syncano-client-js/latest/syncano-client.min.js"></script>
+    <script src="https://unpkg.com/syncano-client"></script>
 
 **Usage**
 
 The library supports the CommonJS syntax:
 
 ```js
-var Syncano = require('syncano-client');
+var Syncano = require('syncano-client')
 ```
 
 You can also use it with ES6 modules:
 
 ```js
-import Syncano from 'syncano-client';
+import Syncano from 'syncano-client'
 ```
 
 **Creating a connection**
@@ -61,7 +61,7 @@ Before you can send authorized requests, you need to login user with username an
 ```js
 s.login('john.doe', 'secret')
   .then(user => console.log(`Hello ${user.first_name}`))
-  .catch(err => console.log('Invalid username or password.'))
+  .catch(() => console.log('Invalid username or password.'))
 ```
 
 ### `s.logout()`
@@ -127,15 +127,121 @@ Send `PUT` request to Syncano Socket. View `s.get` method for more info.
 
 Send `PATCH` request to Syncano Socket. View `s.get` method for more info.
 
-### `s.subscribe(endpoint, callback)`
+### `s.subscribe(endpoint, data?, callback)`
 
-Subscribe to given Syncano endpoint. Callback is fired each time you receive message from endpoint.
 
+Subscribe to given Syncano endpoint. Callback is fired each time something is pushed to channel bound to endpoint.
 
 ```js
+// your-client-side-file.js
 // chat - socket name
-// messages/poll - endpoint name
-s.subscribe('chat/messages/poll', message => {
+// poll-messages - endpoint name
+s.subscribe('chat/poll-messages', message => {
   // Handle message
 })
 ```
+
+**Public channels**
+
+```yml
+# chat/socket.yml
+endpoints:
+  global-messages:
+    channel: global-messages
+  create-message:
+    file: scripts/create-message.js
+```
+
+```js
+// chat/scripts/create-message.js
+import {data, channel} from 'syncano-server'
+
+data.messages
+  .create({
+    content: ARGS.content,
+    user: META.user.id
+  })
+  .then(message => {
+    channel.publish(`global-messages`, message)
+  })
+```
+
+**Room channels**
+
+```yml
+# chat/socket.yml
+endpoints:
+  private-messages:
+    channel: private-messages.{room}
+  create-message:
+    file: scripts/create-message.js
+```
+
+```js
+// chat/scripts/create-message.js
+import {data, channel} from 'syncano-server'
+
+data.messages
+  .create({
+    room_id: ARGS.room_id,
+    content: ARGS.content, 
+    user: META.user.id
+  })
+  .then(message => {
+    channel.publish(`private-messages.${ARGS.room_id}`, message)
+  })
+```
+
+```js
+s.subscribe('chat/private-messages', {room: 1}, message => {
+  // Handle message
+})
+```
+
+**User channels**
+
+First, you have to use special variable `{user}` in your channel name. It'll be used to check if user trying to access endpoint have rights to do it.
+
+```yml
+# notifications/socket.yml
+endpoints:
+  get:
+    channel: notifications.{user}
+  notify:
+    file: scripts/notify.js
+```
+
+Then you can subscribe to channel by passing socket and endpoint name. User channels require `user_key` to be send in payload. 
+
+```js
+s.subscribe('notifications/get', {user_key: 'USER_KEY'}, notification => {
+  // Handle notification
+})
+```
+
+To publish to the user channel, you have to know it's `username`. 
+
+> In channel name `notifications.{user}` - `{user}` must always be `username`, not id or any other property.
+
+```js
+// notifications/scripts/notify.js
+import {data, channel} from 'syncano-server'
+
+data.notifications
+  .create({
+    content: ARGS.content,
+    username: ARGS.username
+  })
+  .then(notification => {
+    channel.publish(`notifications.${ARGS.username}`, notification)
+  })
+```
+
+### `s.subscribe.once(endpoint, data?, callback)`
+
+Sometimes you want to listen only for one event and after that stop handling new events.
+
+```js
+s.subscribe.('user-auth/verify', isVerified => {
+  // Handle verification
+})

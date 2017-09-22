@@ -1,20 +1,23 @@
+const jsdom = require('mocha-jsdom')
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const axios = require('axios')
 const MockAdapter = require('axios-mock-adapter')
-const SyncanoClient = require('../../src')
+const SyncanoClient = require('../src')
 
 const axiosMock = new MockAdapter(axios)
 
 chai.use(chaiAsPromised)
 
-const { assert } = chai
+const {assert} = chai
 
-describe('SyncanoClient', () => {
+describe('Syncano client units', () => {
   const instanceName = 'test-instance'
   const instanceApiKey = 'test-api-key'
   let client
   let url
+
+  jsdom()
 
   beforeEach(() => {
     client = new SyncanoClient(instanceName, {
@@ -23,8 +26,6 @@ describe('SyncanoClient', () => {
 
     url = client.url.bind(client)
   })
-
-  // afterEach(() => axiosMock.restore())
 
   describe('has property:', () => {
     it('instanceName', () => {
@@ -50,11 +51,15 @@ describe('SyncanoClient', () => {
     })
 
     it('returns promise', () => {
+      const expected = {hello: 'world'}
+
+      axiosMock.onPost(url('users')).reply(200, expected)
+
       assert.instanceOf(client.get('users'), Promise)
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -112,11 +117,13 @@ describe('SyncanoClient', () => {
     })
 
     it('returns promise', () => {
-      assert.instanceOf(client.get('users'), Promise)
+      axiosMock.onPost(url('posts')).reply(200)
+
+      assert.instanceOf(client.get('posts'), Promise)
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -140,7 +147,7 @@ describe('SyncanoClient', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -164,7 +171,7 @@ describe('SyncanoClient', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -188,11 +195,11 @@ describe('SyncanoClient', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
-      axiosMock.onPost(url('users')).reply(200, expected)
+      axiosMock.onPost(url('tags')).reply(200, expected)
 
-      return client.get('users').then(response => {
+      return client.get('tags').then(response => {
         assert.deepEqual(response, expected)
       })
     })
@@ -212,7 +219,7 @@ describe('SyncanoClient', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -232,7 +239,16 @@ describe('SyncanoClient', () => {
     })
 
     it('returns object', () => {
-      assert.instanceOf(client.subscribe('example-socket/example-endpoint', () => {}), Object)
+      axiosMock
+        .onGet(url('example-socket/example-endpoint/history', {}))
+        .reply(200, {objects: [{id: 100}]})
+
+      axiosMock.onGet(url('example-socket/example-endpoint/?')).reply(200)
+
+      assert.instanceOf(
+        client.subscribe('example-socket/example-endpoint', () => {}),
+        Object
+      )
     })
   })
 
@@ -252,23 +268,29 @@ describe('SyncanoClient', () => {
     })
 
     it('returns a Promise if data.last_id param is not present', () => {
-      const data = { token: 'myLittleToken' }
+      const data = {token: 'myLittleToken'}
+      const response = {
+        objects: [{id: 42}]
+      }
+
+      axiosMock.onGet(url('chat/message/history', data)).reply(200, response)
 
       assert.instanceOf(client.setLastId('chat/message', data), Promise)
     })
 
     it('resolves with a valid output', () => {
       const expected = 42
-      const data = { token: 'myLittleToken' }
+      const data = {token: 'myLittleToken'}
       const response = {
-        objects: [
-          { id: 42 }
-        ]
+        objects: [{id: 42}]
       }
 
       axiosMock.onGet(url('chat/message/history', data)).reply(200, response)
 
-      return assert.eventually.equal(client.setLastId('chat/message', data), expected)
+      return assert.eventually.equal(
+        client.setLastId('chat/message', data),
+        expected
+      )
     })
   })
 })
