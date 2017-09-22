@@ -21,7 +21,10 @@ general:
     - "coverage/"
 
 test:
-  post:
+  override:
+    - yarn test:unit
+    - yarn run test:coverage
+    - yarn test:e2e
     - yarn run test:coverage
 
 deployment:
