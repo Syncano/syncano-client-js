@@ -245,3 +245,4 @@ Sometimes you want to listen only for one event and after that stop handling new
 s.subscribe.('user-auth/verify', isVerified => {
   // Handle verification
 })
+```
