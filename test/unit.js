@@ -9,7 +9,7 @@ const axiosMock = new MockAdapter(axios)
 
 chai.use(chaiAsPromised)
 
-const { assert } = chai
+const {assert} = chai
 
 describe('Syncano client units', () => {
   const instanceName = 'test-instance'
@@ -51,7 +51,7 @@ describe('Syncano client units', () => {
     })
 
     it('returns promise', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -59,7 +59,7 @@ describe('Syncano client units', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -123,7 +123,7 @@ describe('Syncano client units', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -147,7 +147,7 @@ describe('Syncano client units', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -171,7 +171,7 @@ describe('Syncano client units', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -195,7 +195,7 @@ describe('Syncano client units', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('tags')).reply(200, expected)
 
@@ -219,7 +219,7 @@ describe('Syncano client units', () => {
     })
 
     it('resolves with valid output', () => {
-      const expected = { hello: 'world' }
+      const expected = {hello: 'world'}
 
       axiosMock.onPost(url('users')).reply(200, expected)
 
@@ -241,7 +241,7 @@ describe('Syncano client units', () => {
     it('returns object', () => {
       axiosMock
         .onGet(url('example-socket/example-endpoint/history', {}))
-        .reply(200, { objects: [{ id: 100 }] })
+        .reply(200, {objects: [{id: 100}]})
 
       axiosMock.onGet(url('example-socket/example-endpoint/?')).reply(200)
 
@@ -268,9 +268,9 @@ describe('Syncano client units', () => {
     })
 
     it('returns a Promise if data.last_id param is not present', () => {
-      const data = { token: 'myLittleToken' }
+      const data = {token: 'myLittleToken'}
       const response = {
-        objects: [{ id: 42 }]
+        objects: [{id: 42}]
       }
 
       axiosMock.onGet(url('chat/message/history', data)).reply(200, response)
@@ -280,9 +280,9 @@ describe('Syncano client units', () => {
 
     it('resolves with a valid output', () => {
       const expected = 42
-      const data = { token: 'myLittleToken' }
+      const data = {token: 'myLittleToken'}
       const response = {
-        objects: [{ id: 42 }]
+        objects: [{id: 42}]
       }
 
       axiosMock.onGet(url('chat/message/history', data)).reply(200, response)

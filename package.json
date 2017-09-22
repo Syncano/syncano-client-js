@@ -19,7 +19,7 @@
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "test:watch": "mocha --watch test/**/*.js --compilers js:babel-register",
     "lint": "standard --fix",
-    "format": "prettier --write --single-quote --no-semi --write *.js {src,test}/**/*.js",
+    "format": "prettier --write --single-quote --no-semi --no-bracket-spacing *.js {src,test}/**/*.js",
     "release:git-config": "git config --global user.email $GITHUB_EMAIL && git config --global user.name $GITHUB_NAME",
     "release:npm-token": "echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\nprogress=false\" > ~/.npmrc"
   },
@@ -27,7 +27,7 @@
     "*.js": [
       "npm run lint",
       "npm run test:unit",
-      "prettier --write --single-quote --no-semi",
+      "npm run format",
       "git add"
     ]
   },

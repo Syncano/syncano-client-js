@@ -3,7 +3,7 @@ import fetch from 'axios'
 
 function SyncanoClient(instanceName = required('instanceName'), options = {}) {
   const host = options.host || 'syncano.space'
-  const DEFAULT_HEADERS = { 'Content-Type': 'application/json' }
+  const DEFAULT_HEADERS = {'Content-Type': 'application/json'}
 
   client.instanceName = instanceName
   client.baseUrl = `https://${instanceName}.${host}/`
@@ -19,9 +19,9 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
       : (username, password) => {
           const url = `https://api.syncano.io/v2/instances/${this
             .instanceName}/users/auth/`
-          const data = JSON.stringify({ username, password })
+          const data = JSON.stringify({username, password})
 
-          return fetch({ url, data }).then(user => {
+          return fetch({url, data}).then(user => {
             this.setToken(user.token)
 
             return user
@@ -56,7 +56,7 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
     data = {},
     options = {}
   ) {
-    return this.post(endpoint, { ...data, _method: 'GET' }, options)
+    return this.post(endpoint, {...data, _method: 'GET'}, options)
   }
 
   client.delete = function(
@@ -64,7 +64,7 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
     data = {},
     options = {}
   ) {
-    return this.post(endpoint, { ...data, _method: 'DELETE' }, options)
+    return this.post(endpoint, {...data, _method: 'DELETE'}, options)
   }
 
   client.put = function(
@@ -72,7 +72,7 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
     data = {},
     options = {}
   ) {
-    return this.post(endpoint, { ...data, _method: 'PUT' }, options)
+    return this.post(endpoint, {...data, _method: 'PUT'}, options)
   }
 
   client.patch = function(
@@ -80,7 +80,7 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
     data = {},
     options = {}
   ) {
-    return this.post(endpoint, { ...data, _method: 'PATCH' }, options)
+    return this.post(endpoint, {...data, _method: 'PATCH'}, options)
   }
 
   // Used by the client.subscribe method to start polling from the correct id
@@ -171,7 +171,7 @@ function SyncanoClient(instanceName = required('instanceName'), options = {}) {
 
     const transformRequest = [
       function(data) {
-        const token = client.token ? { _user_key: client.token } : {} // eslint-disable-line camelcase
+        const token = client.token ? {_user_key: client.token} : {} // eslint-disable-line camelcase
 
         if (data instanceof window.FormData) {
           if (client.token) {
