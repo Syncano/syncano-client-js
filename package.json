@@ -11,12 +11,11 @@
   },
   "scripts": {
     "prepublish": "npm run build",
-    "prebuild": "npm run clean",
+    "prebuild": "rimraf ./dist && rimraf ./lib",
     "precommit": "lint-staged",
     "postversion": "git push origin $CIRCLE_BRANCH && git push origin $CIRCLE_BRANCH --tags",
     "build": "webpack && babel src --out-dir lib",
     "build:watch": "babel src --watch --out-dir lib",
-    "clean": "rimraf ./dist && rimraf ./lib",
     "test": "npm run test:unit && npm run test:e2e",
     "test:base": "cross-env NODE_ENV=test nyc mocha --reporter spec --require babel-register",
     "test:unit": "npm run test:base -- test/unit.js",
