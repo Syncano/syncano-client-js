@@ -19,13 +19,13 @@ This library enables you to interact with the Syncano Sockets via Javascript.
 The library supports the CommonJS syntax:
 
 ```js
-var Syncano = require('syncano-client');
+var Syncano = require('syncano-client')
 ```
 
 You can also use it with ES6 modules:
 
 ```js
-import Syncano from 'syncano-client';
+import Syncano from 'syncano-client'
 ```
 
 **Creating a connection**
@@ -61,7 +61,7 @@ Before you can send authorized requests, you need to login user with username an
 ```js
 s.login('john.doe', 'secret')
   .then(user => console.log(`Hello ${user.first_name}`))
-  .catch(err => console.log('Invalid username or password.'))
+  .catch(() => console.log('Invalid username or password.'))
 ```
 
 ### `s.logout()`
@@ -158,13 +158,12 @@ import {data, channel} from 'syncano-server'
 
 data.messages
   .create({
-    content: ARGS.content, 
+    content: ARGS.content,
     user: META.user.id
   })
   .then(message => {
     channel.publish(`global-messages`, message)
   })
-
 ```
 
 **Room channels**
@@ -184,7 +183,7 @@ import {data, channel} from 'syncano-server'
 
 data.messages
   .create({
-    room_id: ARGS.room_id
+    room_id: ARGS.room_id,
     content: ARGS.content, 
     user: META.user.id
   })
@@ -230,7 +229,7 @@ import {data, channel} from 'syncano-server'
 
 data.notifications
   .create({
-    content: ARGS.content, 
+    content: ARGS.content,
     username: ARGS.username
   })
   .then(notification => {
