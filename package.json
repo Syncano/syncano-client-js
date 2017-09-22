@@ -1,6 +1,6 @@
 {
   "name": "syncano-client",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Interact with your Syncano Sockets.",
   "main": "lib/index.js",
   "author": "Syncano Inc.",
