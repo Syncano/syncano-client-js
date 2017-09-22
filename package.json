@@ -2,8 +2,13 @@
   "name": "syncano-client",
   "version": "0.2.6",
   "description": "Interact with your Syncano Sockets.",
-  "license": "MIT",
   "main": "lib/index.js",
+  "author": "Syncano Inc.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Syncano/syncano-server-js.git"
+  },
   "scripts": {
     "prepublish": "npm run build",
     "prebuild": "npm run clean",
