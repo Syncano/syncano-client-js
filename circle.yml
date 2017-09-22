@@ -30,14 +30,14 @@ deployment:
     commands:
       - yarn run release:git-config
       - yarn run release:npm-token
-      - npm version prerelease -m "chore: bump version to %s [ci skip]"
+      - npm version prerelease -m "bump version to %s [ci skip]"
       - npm publish --tag beta
   production:
     branch: master
     commands:
       - yarn run release:git-config
       - yarn run release:npm-token
-      - npm version patch -m "chore: bump version to %s [ci skip]"
+      - npm version patch -m "bump version to %s [ci skip]"
       - npm publish
 
 experimental:
