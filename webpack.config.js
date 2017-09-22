@@ -11,9 +11,7 @@ module.exports = [
       library: 'SyncanoClient'
     },
     module: {
-      rules: [
-        { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] }
-      ]
+      rules: [{test: /\.js$/, exclude: /node_modules/, use: ['babel-loader']}]
     },
     plugins: [
       new webpack.LoaderOptionsPlugin({
@@ -24,7 +22,7 @@ module.exports = [
         beautify: true,
         mangle: {
           screw_ie8: true, // eslint-disable-line camelcase
-          keep_fnames: true  // eslint-disable-line camelcase
+          keep_fnames: true // eslint-disable-line camelcase
         },
         comments: false
       })
@@ -40,9 +38,7 @@ module.exports = [
       library: 'SyncanoClient'
     },
     module: {
-      rules: [
-        { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] }
-      ]
+      rules: [{test: /\.js$/, exclude: /node_modules/, use: ['babel-loader']}]
     },
     plugins: [
       new webpack.LoaderOptionsPlugin({
@@ -53,7 +49,7 @@ module.exports = [
         beautify: false,
         mangle: {
           screw_ie8: true, // eslint-disable-line camelcase
-          keep_fnames: true  // eslint-disable-line camelcase
+          keep_fnames: true // eslint-disable-line camelcase
         },
         comments: false
       })
