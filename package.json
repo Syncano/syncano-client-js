@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Syncano/syncano-server-js.git"
+    "url": "https://github.com/Syncano/syncano-client-js.git"
   },
   "scripts": {
     "prepublish": "npm run build",
